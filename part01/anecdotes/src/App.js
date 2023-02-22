@@ -1,5 +1,8 @@
 import { useState } from 'react'
 
+
+
+
 const App = () => {
   const anecdotes = [
     'If it hurts, do it more often.',
@@ -11,19 +14,32 @@ const App = () => {
     'Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when diagnosing patients.',
     'The only way to go fast, is to go well.'
   ]
+
+  const points = {}
+  for (let index in anecdotes) {
+    points[index] = 0
+  }
    
-  const [selected, setSelected] = useState(anecdotes[0])
+  const [selected, setSelected] = useState(0)
+  const [allPoints, setAllPoints] = useState({...points})
 
   const handleClick = () => {
     const randIndex = Math.floor(Math.random() * anecdotes.length)
-    setSelected(anecdotes[randIndex])
+    setSelected(randIndex)
+  }
+
+  const handleVote = () => {
+    setAllPoints({...allPoints, [selected]: allPoints[selected] + 1})
+    console.log(allPoints)
   }
 
   return (
     <div>
       <div>
-        {selected}
+        <p>{anecdotes[selected]}</p>
+        <p>has {allPoints[selected]}</p>
       </div>
+      <button onClick={handleVote}>vote</button>
       <button onClick={handleClick}>next anecdote</button>
     </div>
   )
