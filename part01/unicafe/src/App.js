@@ -6,11 +6,23 @@ const App = () => {
   const [neutral, setNeutral] = useState(0)
   const [bad, setBad] = useState(0)
 
-  const handleIncrement = (setter, ) => {
+  const handleIncrement = (setter) => {
     return () => setter((prev) => {
       return prev + 1
     })
   }
+  
+  const calculateTotal = () => {
+    return good + neutral + bad
+  }
+
+  const calculateAverage = () => {
+    if (calculateTotal() <= 0) {
+      return 0
+    }
+    
+    return (good*1 + bad*-1) / (good + bad + neutral)
+  } 
 
   return (
     <div>
@@ -22,6 +34,8 @@ const App = () => {
       <p>good {good}</p>
       <p>neutral {neutral}</p>
       <p>bad {bad}</p>
+      <p>all {calculateTotal()}</p>
+      <p>average {calculateAverage()}</p>
     </div>
   )
 }
