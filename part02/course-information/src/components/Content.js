@@ -4,9 +4,9 @@ const Content = ({parts}) => {
 
     return (
         <div>
-            {parts.map(({name, exercises, partId}) => {
+            {parts.map(({name, exercises, id}) => {
                 return <Part 
-                    key={partId}
+                    key={id}
                     name={name}
                     exercises={exercises}
                 />
