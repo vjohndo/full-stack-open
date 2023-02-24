@@ -18,7 +18,6 @@ const App = () => {
 
   const [nameFilter, setNameFilter] = useState("")
 
-
   const handleSubmit = (event) => {
     event.preventDefault()
     if (persons.find(e => e.name === newPerson.name)) {
