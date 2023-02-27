@@ -1,15 +1,18 @@
 const Persons = ({ personsToShow }) => {
-    
-    const output = 
-        (!personsToShow) ? 
-        <></> : 
-        personsToShow.map(({ name, number }) =>
+
+    if (!personsToShow) {
+        return <div></div>
+    }
+
+    return (
+        <div>
+            {personsToShow.map(({name, number}) =>
             <p key={number}>
                 {name} {number}
             </p>
-        )
-
-    return <div>{output}</div>
+            )}
+        </div>
+    )
 }
 
 export default Persons
