@@ -22,17 +22,25 @@ const App = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault()
-    if (persons.find(e => e.name === newPerson.name)) {
-      alert(`${newPerson.name} is already added to the phonebook`)
+    const matchedPerson = persons.find(e => e.name === newPerson.name)
+
+    if (matchedPerson) {
+      numbersService
+        .updateOne(matchedPerson.id, newPerson)
+        .then(returnedPerson => {
+          const updatedPerons = persons.map(p => p.name !== matchedPerson.name
+            ? p : returnedPerson )
+          setPersons(updatedPerons)
+        })
     } else {
       numbersService
         .createOne(newPerson)
         .then(returnedPerson => setPersons(persons.concat(returnedPerson)))
-      setNewPerson({
-        name: "",
-        number: ""
-      })
     }
+    setNewPerson({
+      name: "",
+      number: ""
+    })
   }
 
   const handleChange = (event) => {
