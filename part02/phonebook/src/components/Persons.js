@@ -1,4 +1,4 @@
-const Persons = ({ personsToShow }) => {
+const Persons = ({ personsToShow, onDelete }) => {
 
     if (!personsToShow) {
         return <div></div>
@@ -6,10 +6,12 @@ const Persons = ({ personsToShow }) => {
 
     return (
         <div>
-            {personsToShow.map(({name, number}) =>
-            <p key={number}>
-                {name} {number}
-            </p>
+            {personsToShow.map(({name, number, id}) => (
+                <p key={id}>
+                    {name} {number} 
+                    <button onClick={() => onDelete(id)}>Delete</button>
+                </p>
+            )
             )}
         </div>
     )

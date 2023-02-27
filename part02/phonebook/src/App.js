@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import axios from 'axios'
 import PersonForm from './components/PersonForm'
 import Filter from './components/Filter'
 import Persons from './components/Persons'
@@ -27,7 +26,7 @@ const App = () => {
       alert(`${newPerson.name} is already added to the phonebook`)
     } else {
       numbersService
-        .create(newPerson)
+        .createOne(newPerson)
         .then(returnedPerson => setPersons(persons.concat(returnedPerson)))
       setNewPerson({
         name: "",
@@ -48,6 +47,17 @@ const App = () => {
     const newNameFilter = event.target.value
     setNameFilter(newNameFilter)
   }
+  
+  const deletePerson = (id) => {
+
+    const targetPerson = persons.find(person => person.id === id)
+
+    if (window.confirm(`Do you really want to delete ${targetPerson.name} of ID ${id}?`)) {
+      numbersService
+        .deleteOne(id)
+        .then(setPersons(persons.filter(person => person.id !== id)))
+    } 
+  }
 
   const filteredPersons = () => persons.filter((person) => {
     const name = person.name.toLowerCase()
@@ -64,7 +74,7 @@ const App = () => {
       <PersonForm handleChange={handleChange} handleSubmit={handleSubmit} newPerson={newPerson} />
       
       <h2>Numbers</h2>
-      <Persons personsToShow={personsToShow} />
+      <Persons personsToShow={personsToShow} onDelete={deletePerson}/>
     </div>
   )
 }
