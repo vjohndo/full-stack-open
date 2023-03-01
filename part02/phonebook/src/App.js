@@ -15,7 +15,7 @@ const App = () => {
     number: ""
   })
   const [nameFilter, setNameFilter] = useState("")
-  const [alertMessage, setAlertMessage] = useState(null)
+  const [alertMessage, setAlertMessage] = useState({message: null, color: null})
 
   useEffect(() => {
     numbersService
@@ -34,7 +34,7 @@ const App = () => {
           const updatedPerons = persons.map(p => p.name !== returnedPerson.name
             ? p : returnedPerson )
           setPersons(updatedPerons)
-          setAlertMessage(`Updated ${returnedPerson.name}`)
+          setAlertMessage({message: `Updated ${returnedPerson.name}`, color:"green"})
           setTimeout(() => setAlertMessage(null), 5000)
         })
     } else {
@@ -42,8 +42,8 @@ const App = () => {
         .createOne(newPerson)
         .then(returnedPerson => {
           setPersons(persons.concat(returnedPerson))
-          setAlertMessage(`Added ${returnedPerson.name}`)
-          setTimeout(() => setAlertMessage(null), 5000)
+          setAlertMessage({message:`Added ${returnedPerson.name}`, color:"green"})
+          setTimeout(() => setAlertMessage({message: null, color: null}), 5000)
         })
     }
     setNewPerson({
@@ -72,7 +72,11 @@ const App = () => {
     if (window.confirm(`Do you really want to delete ${targetPerson.name} of ID ${id}?`)) {
       numbersService
         .deleteOne(id)
-        .then(setPersons(persons.filter(person => person.id !== id)))
+        .then(response => setPersons(persons.filter(person => person.id !== id)))
+        .catch(error => {
+          setAlertMessage({message:`Information of ${targetPerson.name} has already been deleted`, color:"red"})
+          setPersons(persons.filter(person => person.id !== id))
+        })
     } 
   }
 
@@ -87,7 +91,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <Notification message={alertMessage} />
+      <Notification notification={alertMessage} />
       <Filter nameFilter={nameFilter} handleFilter={handleFilter} />
       <PersonForm handleChange={handleChange} handleSubmit={handleSubmit} newPerson={newPerson} />
       
